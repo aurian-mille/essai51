@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BCM Sports · Padel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bcm:#7B3F8C;--bcm-d:#5c2e6b;--bcm-l:#a467b5;--bcm-xl:#d4b0db;
+  --gold:#c9a84c;--gold-l:#e8c96a;--silver:#8a8fa0;--bronze:#a0622a;
+  --bg:#080608;--s1:#0f0b12;--s2:#161019;--s3:#1e1625;--s4:#261d30;
+  --border:rgba(123,63,140,0.18);--border2:rgba(123,63,140,0.35);
+  --text:#ede8f0;--text2:#8a7d94;--text3:#4a3d54;
+  --green:#2d9e6b;--red:#c0392b;--orange:#c07a28;
+  --r:12px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;overflow-x:hidden}
+body{padding-bottom:72px}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:linear-gradient(180deg,rgba(15,11,18,0.98) 0%,rgba(15,11,18,0.95) 100%);
+  border-bottom:1px solid var(--border2);
+  padding:0 18px;height:62px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(20px);
+}
+.topbar-logo{display:flex;flex-direction:column;line-height:1}
+.topbar-bcm{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:700;letter-spacing:3px;
+  color:var(--bcm-l);
+}
+.topbar-bcm span{color:var(--text2);font-weight:400}
+.topbar-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-top:1px}
+.org-btn{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(123,63,140,0.08);
+  border:1px solid var(--border2);
+  border-radius:20px;padding:6px 14px;
+  font-size:12px;font-weight:600;letter-spacing:.5px;
+  color:var(--text2);cursor:pointer;transition:.2s;
+  text-transform:uppercase;
+}
+.org-btn:hover{border-color:var(--bcm-l);color:var(--bcm-l)}
+.org-btn.active{background:linear-gradient(135deg,rgba(123,63,140,0.3),rgba(200,120,50,0.1));border-color:var(--gold);color:var(--gold-l)}
+.org-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);transition:.2s}
+.org-btn.active .org-dot{background:var(--gold)}
+
+/* ── TABS ── */
+.tabs{
+  display:flex;background:var(--s1);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto;padding:14px 18px;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;
+  transition:.2s;white-space:nowrap;
+}
+.tab.active{color:var(--bcm-l);border-bottom-color:var(--bcm)}
+.tab-content{display:none;padding:18px 16px}
+.tab-content.active{display:block}
+
+/* ── BOTTOM NAV ── */
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(8,6,8,0.96);
+  border-top:1px solid var(--border2);
+  backdrop-filter:blur(20px);
+  display:flex;z-index:100;
+}
+.nav-btn{
+  flex:1;padding:10px 4px 12px;background:none;border:none;
+  color:var(--text3);font-size:9px;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:.2s;font-family:'DM Sans',sans-serif;
+}
+.nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:.2s}
+.nav-btn.active{color:var(--bcm-l)}
+.nav-btn.active svg{stroke:var(--bcm-l);filter:drop-shadow(0 0 4px rgba(164,103,181,0.4))}
+
+/* ── CARDS ── */
+.card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;margin-bottom:12px;
+  position:relative;overflow:hidden;
+}
+.card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(164,103,181,0.3) 50%,transparent 100%);
+}
+.card-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;font-weight:600;letter-spacing:1px;
+  color:var(--bcm-xl);margin-bottom:12px;
+}
+
+/* ── SECTION TITLE ── */
+.section-title{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);margin:20px 0 10px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 20px;border-radius:var(--rs);
+  font-weight:600;font-size:13px;cursor:pointer;border:none;
+  transition:.15s;letter-spacing:.3px;font-family:'DM Sans',sans-serif;
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-primary{
+  background:linear-gradient(135deg,var(--bcm),var(--bcm-d));
+  color:#fff;box-shadow:0 2px 12px rgba(123,63,140,0.35);
+}
+.btn-primary:hover{box-shadow:0 4px 18px rgba(123,63,140,0.5)}
+.btn-gold{
+  background:linear-gradient(135deg,#a07828,var(--gold));
+  color:#1a1208;font-weight:700;
+  box-shadow:0 2px 12px rgba(201,168,76,0.3);
+}
+.btn-success{background:rgba(45,158,107,0.15);color:var(--green);border:1px solid rgba(45,158,107,0.3)}
+.btn-danger{background:rgba(192,57,43,0.1);color:var(--red);border:1px solid rgba(192,57,43,0.25)}
+.btn-outline{
+  background:transparent;border:1px solid var(--border2);color:var(--text2);
+}
+.btn-outline:hover{border-color:var(--bcm-l);color:var(--bcm-l)}
+.btn-sm{padding:7px 14px;font-size:12px}
+.btn-xs{padding:5px 10px;font-size:11px}
+.btn-block{width:100%;margin-bottom:8px}
+
+/* ── FORMS ── */
+label{display:block;font-size:10px;font-weight:700;color:var(--text3);margin-bottom:5px;letter-spacing:1px;text-transform:uppercase}
+input,select{
+  width:100%;background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--rs);padding:11px 13px;color:var(--text);
+  font-size:14px;font-family:'DM Sans',sans-serif;transition:.2s;
+  -webkit-appearance:none;
+}
+input:focus,select:focus{outline:none;border-color:var(--bcm-l);background:var(--s3)}
+.form-group{margin-bottom:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ── SCORE INPUT ── */
+.score-input{
+  width:64px!important;text-align:center;
+  font-size:24px!important;font-weight:700!important;
+  padding:10px 6px!important;
+  border:1.5px solid var(--border2)!important;
+  color:var(--gold-l)!important;background:var(--s3)!important;
+}
+.score-input:focus{border-color:var(--bcm-l)!important;color:var(--text)!important}
+
+/* ── MATCH CARD ── */
+.match-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--rs);padding:13px 14px;margin-bottom:8px;
+  transition:.2s;
+}
+.match-card.validated{border-color:rgba(45,158,107,0.35);background:rgba(45,158,107,0.04)}
+.match-teams{font-weight:600;font-size:14px;margin-bottom:8px;color:var(--text);line-height:1.4}
+.match-vs{color:var(--text3);font-size:11px;font-weight:400}
+.match-score-display{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:700;color:var(--gold-l);letter-spacing:3px;
+}
+.validated-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--green);background:rgba(45,158,107,0.1);
+  padding:3px 9px;border-radius:20px;border:1px solid rgba(45,158,107,0.25);
+}
+
+/* ── POOL ── */
+.pool-block{border:1px solid var(--border);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+.pool-header{
+  background:linear-gradient(135deg,var(--bcm-d),rgba(123,63,140,0.7));
+  padding:10px 16px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;font-weight:700;letter-spacing:2px;color:#fff;
+  text-transform:uppercase;
+}
+.pool-table{width:100%;border-collapse:collapse;font-size:12px}
+.pool-table th{
+  background:var(--s2);padding:8px 10px;text-align:center;
+  font-size:10px;font-weight:700;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.8px;
+}
+.pool-table td{padding:9px 10px;text-align:center;border-top:1px solid var(--border)}
+.pool-table .team-name{text-align:left;font-weight:600;font-size:13px}
+.pool-table tr.qualifies td{background:rgba(123,63,140,0.07)}
+.pool-table tr.qualifies .team-name::after{
+  content:'Q';margin-left:6px;
+  font-size:9px;font-weight:700;color:var(--bcm-l);
+  background:rgba(123,63,140,0.2);padding:1px 5px;border-radius:3px;
+}
+
+/* ── BRACKET ── */
+.bracket-container{overflow-x:auto;padding:6px 0 12px}
+.bracket{display:flex;gap:0;min-width:560px}
+.bracket-round{display:flex;flex-direction:column;justify-content:space-around;min-width:165px}
+.bracket-round-title{
+  text-align:center;
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--bcm-l);padding:8px 0 12px;
+}
+.bracket-match{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:6px;margin:5px 8px;padding:8px 10px;
+  font-size:12px;cursor:pointer;transition:.2s;
+}
+.bracket-match:hover{border-color:var(--bcm-l)}
+.bracket-match.validated{border-color:rgba(45,158,107,0.4)}
+.bracket-match.active-round{border-color:var(--bcm);box-shadow:0 0 10px rgba(123,63,140,0.2)}
+.bracket-team{padding:3px 0;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.bracket-team select.inline-team-select{
+  background:transparent;
+  color:var(--text);
+  border:none;
+  font-family:inherit;
+  font-size:12px;
+  cursor:pointer;
+  width:100%;
+  padding:0;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.bracket-team select.inline-team-select:focus{
+  background:var(--s4);
+  outline:1px dashed var(--bcm-l);
+}
+.bracket-team.winner select.inline-team-select{font-weight:700;color:var(--gold-l)}
+.bracket-team.winner .bracket-score{color:var(--gold-l)}
+.bracket-team.loser select.inline-team-select{color:var(--text3)}
+.bracket-team.loser .bracket-score{color:var(--text3)}
+.bracket-score{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;font-weight:700;color:var(--gold);
+}
+
+/* ── PHASE BANNER ── */
+.phase-banner{
+  background:linear-gradient(135deg,rgba(123,63,140,0.12),rgba(123,63,140,0.04));
+  border:1px solid var(--border2);border-radius:var(--rs);
+  padding:13px 15px;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+.phase-label{font-size:13px;font-weight:700;color:var(--text)}
+.phase-count{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* ── PROGRESS ── */
+.progress-bar{background:var(--s3);border-radius:99px;height:3px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--bcm-d),var(--bcm-l));border-radius:99px;transition:.4s}
+
+/* ── TEAM TAG ── */
+.team-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;font-size:12px;margin:3px;
+}
+.team-tag button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;line-height:1;padding:0}
+.team-tag button:hover{color:var(--red)}
+
+/* ── RANKING ── */
+.rank-item{
+  display:flex;align-items:center;gap:12px;padding:13px 14px;
+  background:var(--s2);border-radius:var(--rs);margin-bottom:8px;
+  border:1px solid var(--border);
+}
+.rank-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:26px;font-weight:700;width:34px;text-align:center;
+}
+.rank-1 .rank-num{color:var(--gold)}
+.rank-2 .rank-num{color:var(--silver)}
+.rank-3 .rank-num{color:var(--bronze)}
+.rank-name{flex:1;font-weight:600;font-size:13px}
+.rank-meta{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* ── TOURNOI ITEM ── */
+.tournament-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--rs);padding:14px;margin-bottom:8px;cursor:pointer;transition:.2s;
+}
+.tournament-item:hover{border-color:var(--bcm-l);background:var(--s3)}
+.t-name{font-weight:700;font-size:14px}
+.t-meta{font-size:11px;color:var(--text2);margin-top:3px}
+.t-status{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
+.t-status.active{background:rgba(123,63,140,0.15);color:var(--bcm-l)}
+.t-status.finished{background:rgba(201,168,76,0.12);color:var(--gold)}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--s1);border:1px solid var(--border2);
+  border-radius:16px 16px 0 0;
+  padding:22px 18px 36px;width:100%;max-width:520px;
+  max-height:90vh;overflow-y:auto;
+  box-shadow:0 -8px 40px rgba(123,63,140,0.2);
+  animation:slideUp .22s ease;
+}
+@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-weight:700;letter-spacing:1px;
+  color:var(--bcm-xl);margin-bottom:18px;
+}
+.modal-close{float:right;background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:0;margin-top:-3px}
+.modal-close:hover{color:var(--text)}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:82px;left:50%;transform:translateX(-50%);
+  background:var(--s3);border:1px solid var(--border2);
+  border-radius:var(--rs);padding:10px 22px;
+  font-size:13px;font-weight:600;z-index:300;
+  pointer-events:none;opacity:0;transition:.25s;white-space:nowrap;
+  backdrop-filter:blur(10px);
+}
+.toast.show{opacity:1}
+.toast.success{border-color:rgba(45,158,107,0.5);color:var(--green)}
+.toast.error{border-color:rgba(192,57,43,0.5);color:var(--red)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-bcm">BCM<span>SPORTS</span></div>
+    <div class="topbar-sub">Gestionnaire Tournois Padel</div>
+  </div>
+  <div id="org-btn" class="org-btn" onclick="toggleOrgMode()">
+    <div class="org-dot"></div>
+    <span>Organisateur</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('accueil')">Accueil</div>
+  <div class="tab" onclick="switchTab('poules')">Poules</div>
+  <div class="tab" onclick="switchTab('finale')">Phase Finale</div>
+  <div class="tab" onclick="switchTab('classement')">Classement</div>
+  <div class="tab" onclick="switchTab('historique')">Historique</div>
+</div>
+
+<div id="tab-accueil" class="tab-content active"></div>
+
+<div id="tab-poules" class="tab-content"></div>
+
+<div id="tab-finale" class="tab-content"></div>
+
+<div id="tab-classement" class="tab-content"></div>
+
+<div id="tab-historique" class="tab-content"></div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="switchTab('accueil')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Accueil
+  </button>
+  <button class="nav-btn" onclick="switchTab('poules')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Poules
+  </button>
+  <button class="nav-btn" onclick="switchTab('finale')">
+    <svg viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 13h12M6 18h12"/></svg>Tableaux
+  </button>
+  <button class="nav-btn" onclick="switchTab('classement')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>Classement
+  </button>
+</div>
+
+<div id="createModal" class="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('createModal')">×</button>
+    <div class="modal-title">Nouveau Tournoi</div>
+    <div class="form-group"><label>Nom du tournoi</label><input type="text" id="t-name" placeholder="P100 Premium..."></div>
+    <div class="form-row">
+      <div class="form-group"><label>Date</label><input type="date" id="t-date"></div>
+      <div class="form-group"><label>Lieu</label><input type="text" id="t-lieu" placeholder="Club Casa Padel..."></div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="createTournament()">Créer le tournoi</button>
+  </div>
+</div>
+
+<div id="scoreModal" class="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="scoreModalContent"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ─── LOCAL STORAGE & STATE ──────────────────────────────────────────────────
+let state = {
+  tournaments: [],
+  currentId: null,
+  orgMode: false
+};
+
+function load() {
+  const data = localStorage.getItem('bcm_padel_data');
+  if(data) {
+    try { state = JSON.parse(data); } catch(e) { console.error(e); }
+  }
+}
+function save() { localStorage.setItem('bcm_padel_data', JSON.stringify(state)); }
+
+const defaultTeams = [
+  "a. / o.", "mamn / papa", "pablo / lucas", "zeumel / zeubi",
+  "whilaim / valouz", "macron / bardella", "marco / camille", "robin / adiren",
+  "marie / charlotte", "cyrol / clemence", "mae / oscar", "maelys / paul",
+  "romane / adele", "thomas / edouard", "matteo / marceli", "aurian / gauthier"
+];
+
+function init() {
+  load();
+  if(!state.tournaments.length) {
+    const t = {
+      id: 't_' + Date.now(),
+      name: 'Tournoi BCM Sports Padel',
+      date: new Date().toISOString().split('T')[0],
+      lieu: 'Casa Padel',
+      phase: 'registration',
+      teams: [...defaultTeams],
+      pools: [],
+      mainBracket: {},
+      consolationBracket: {}
+    };
+    state.tournaments.push(t);
+    state.currentId = t.id;
+    save();
+  }
+  updateOrgBtn();
+  render('accueil');
+}
+
+function currentTourney() { return state.tournaments.find(t => t.id === state.currentId); }
+function toggleOrgMode() { state.orgMode = !state.orgMode; save(); updateOrgBtn(); const t=currentTourney(); render(document.querySelector('.tab.active').innerText.toLowerCase() === 'phase finale' ? 'finale' : document.querySelector('.tab.active').innerText.toLowerCase()); }
+function updateOrgBtn() { const b = document.getElementById('org-btn'); if(state.orgMode) b.classList.add('active'); else b.classList.remove('active'); }
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  
+  const tabsMap = { accueil:0, poules:1, finale:2, classement:3, historique:4 };
+  const btns = document.querySelectorAll('.nav-btn');
+  
+  if(tab==='accueil') { document.querySelectorAll('.tab')[0].classList.add('active'); document.getElementById('tab-accueil').classList.add('active'); btns[0].classList.add('active'); }
+  if(tab==='poules') { document.querySelectorAll('.tab')[1].classList.add('active'); document.getElementById('tab-poules').classList.add('active'); btns[1].classList.add('active'); }
+  if(tab==='finale') { document.querySelectorAll('.tab')[2].classList.add('active'); document.getElementById('tab-finale').classList.add('active'); btns[2].classList.add('active'); }
+  if(tab==='classement') { document.querySelectorAll('.tab')[3].classList.add('active'); document.getElementById('tab-classement').classList.add('active'); btns[3].classList.add('active'); }
+  if(tab==='historique') { document.querySelectorAll('.tab')[4].classList.add('active'); document.getElementById('tab-historique').classList.add('active'); }
+  render(tab);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModalOnOverlay(e) { if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); }
+
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.innerText = msg; t.className = `toast show ${type}`;
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── LOGIQUE D'INSCRIPTION ───
+function addTeam() {
+  const t = currentTourney(); if(t.phase !== 'registration') return;
+  const name = prompt("Nom de l'équipe (ex: Jean / Pierre) :");
+  if(!name || !name.trim()) return;
+  if(t.teams.includes(name.trim())) { toast("Ce nom existe déjà", "error"); return; }
+  t.teams.push(name.trim()); save(); render('accueil');
+}
+function removeTeam(idx) {
+  const t = currentTourney(); if(t.phase !== 'registration') return;
+  t.teams.splice(idx, 1); save(); render('accueil');
+}
+
+// ─── LOGIQUE DES POULES ──────────────────────────────────────────────────────
+function generatePools() {
+  const t = currentTourney();
+  if(t.teams.length < 4) { toast("Il faut au moins 4 équipes !", "error"); return; }
+  
+  let shuffled = [...t.teams].sort(() => Math.random() - 0.5);
+  let numPools = Math.floor(shuffled.length / 4);
+  if(numPools === 0) numPools = 1;
+  
+  t.pools = Array.from({length: numPools}, (_, i) => ({ name: `Poule ${String.fromCharCode(65 + i)}`, teams: [], matches: [] }));
+  shuffled.forEach((team, i) => t.pools[i % numPools].teams.push({ name: team, pts:0, j:0, g:0, p:0, diff:0 }));
+  
+  t.pools.forEach(p => {
+    for(let i=0; i<p.teams.length; i++) {
+      for(let j=i+1; j<p.teams.length; j++) {
+        p.matches.push({ id: `m_${Date.now()}_${Math.random().toString(36).substr(2,5)}`, t1: p.teams[i].name, t2: p.teams[j].name, s1: null, s2: null, validated: false });
+      }
+    }
+  });
+  
+  t.phase = 'pools'; save(); render('poules'); toast("Poules générées avec succès !");
+}
+
+function updatePoolStats(p) {
+  p.teams.forEach(t => { t.pts=0; t.j=0; t.g=0; t.p=0; t.diff=0; });
+  p.matches.forEach(m => {
+    if(!m.validated) return;
+    const tm1 = p.teams.find(t => t.name === m.t1);
+    const tm2 = p.teams.find(t => t.name === m.t2);
+    if(!tm1 || !tm2) return;
+    tm1.j++; tm2.j++;
+    tm1.diff += (m.s1 - m.s2);
+    tm2.diff += (m.s2 - m.s1);
+    if(m.s1 > m.s2) { tm1.pts += 3; tm1.g++; tm2.p++; }
+    else { tm2.pts += 3; tm2.g++; tm1.p++; }
+  });
+  p.teams.sort((a,b) => b.pts - a.pts || b.diff - a.diff);
+}
+
+// ─── LOGIQUE DE LA PHASE FINALE & CONSOLANTE ──────────────────────────────────
+function startBrackets() {
+  const t = currentTourney();
+  t.pools.forEach(p => updatePoolStats(p));
+  
+  let qualifiésPrincipale = [];
+  let repêchésConsolante = [];
+  
+  t.pools.forEach(p => {
+    if(p.teams[0]) qualifiésPrincipale.push(p.teams[0].name);
+    if(p.teams[1]) qualifiésPrincipale.push(p.teams[1].name);
+    if(p.teams[2]) repêchésConsolante.push(p.teams[2].name);
+    if(p.teams[3]) repêchésConsolante.push(p.teams[3].name);
+  });
+  
+  // Tableau principal en 8èmes (16 slots requis)
+  while(qualifiésPrincipale.length < 16) qualifiésPrincipale.push("Exempt");
+  t.mainBracket = {
+    r1: [
+      {id:'m_m1', t1:qualifiésPrincipale[0], t2:qualifiésPrincipale[15]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m2', t1:qualifiésPrincipale[7]||'Exempt', t2:qualifiésPrincipale[8]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m3', t1:qualifiésPrincipale[4]||'Exempt', t2:qualifiésPrincipale[11]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m4', t1:qualifiésPrincipale[3]||'Exempt', t2:qualifiésPrincipale[12]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m5', t1:qualifiésPrincipale[2]||'Exempt', t2:qualifiésPrincipale[13]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m6', t1:qualifiésPrincipale[5]||'Exempt', t2:qualifiésPrincipale[10]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m7', t1:qualifiésPrincipale[6]||'Exempt', t2:qualifiésPrincipale[9]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_m8', t1:qualifiésPrincipale[1]||'Exempt', t2:qualifiésPrincipale[14]||'Exempt', s1:null, s2:null, val:false}
+    ],
+    r2: Array.from({length:4}, (_,i)=>({id:`m_m_q${i}`, t1:'---', t2:'---', s1:null, s2:null, val:false})),
+    r3: Array.from({length:2}, (_,i)=>({id:`m_m_d${i}`, t1:'---', t2:'---', s1:null, s2:null, val:false})),
+    r4: [{id:'m_m_f', t1:'---', t2:'---', s1:null, s2:null, val:false}]
+  };
+  
+  // GESTION EXPRESS CONSOLANTE : Pas de 8èmes, départ direct en Quarts de finale (8 slots max)
+  while(repêchésConsolante.length < 8) repêchésConsolante.push("Exempt");
+  t.consolationBracket = {
+    r1: [
+      {id:'m_c_q1', t1:repêchésConsolante[0], t2:repêchésConsolante[7]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_c_q2', t1:repêchésConsolante[3]||'Exempt', t2:repêchésConsolante[4]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_c_q3', t1:repêchésConsolante[2]||'Exempt', t2:repêchésConsolante[5]||'Exempt', s1:null, s2:null, val:false},
+      {id:'m_c_q4', t1:repêchésConsolante[1], t2:repêchésConsolante[6]||'Exempt', s1:null, s2:null, val:false}
+    ],
+    r2: Array.from({length:2}, (_,i)=>({id:`m_c_d${i}`, t1:'---', t2:'---', s1:null, s2:null, val:false})),
+    r3: [{id:'m_c_f', t1:'---', t2:'---', s1:null, s2:null, val:false}]
+  };
+  
+  autoAdvanceExempts(t.mainBracket, 8);
+  autoAdvanceExempts(t.consolationBracket, 4);
+  
+  t.phase = 'bracket'; save(); render('finale'); toast("Phase finale initialisée !");
+}
+
+function autoAdvanceExempts(b, round1MatchCount) {
+  b.r1.forEach((m, idx) => {
+    if(m.t1 === 'Exempt' && m.t2 === 'Exempt') { m.s1=0; m.s2=0; m.val=true; advanceWinner(b, m, 'Exempt'); }
+    else if(m.t1 === 'Exempt') { m.s1=0; m.s2=1; m.val=true; advanceWinner(b, m, m.t2); }
+    else if(m.t2 === 'Exempt') { m.s1=1; m.s2=0; m.val=true; advanceWinner(b, m, m.t1); }
+  });
+}
+
+function advanceWinner(b, match, winnerName) {
+  const id = match.id;
+  if(id.startsWith('m_m1')||id.startsWith('m_m2')) { const target=b.r2[0]; if(id.endsWith('1')) target.t1=winnerName; else target.t2=winnerName; }
+  else if(id.startsWith('m_m3')||id.startsWith('m_m4')) { const target=b.r2[1]; if(id.endsWith('3')) target.t1=winnerName; else target.t2=winnerName; }
+  else if(id.startsWith('m_m5')||id.startsWith('m_m6')) { const target=b.r2[2]; if(id.endsWith('5')) target.t1=winnerName; else target.t2=winnerName; }
+  else if(id.startsWith('m_m7')||id.startsWith('m_m8')) { const target=b.r2[3]; if(id.endsWith('7')) target.t1=winnerName; else target.t2=winnerName; }
+  
+  else if(id === 'm_m_q0' || id === 'm_m_q1') { const target=b.r3[0]; if(id==='m_m_q0') target.t1=winnerName; else target.t2=winnerName; }
+  else if(id === 'm_m_q2' || id === 'm_m_q3') { const target=b.r3[1]; if(id==='m_m_q2') target.t1=winnerName; else target.t2=winnerName; }
+  else if(id === 'm_m_d0' || id === 'm_m_d1') { const target=b.r4[0]; if(id==='m_m_d0') target.t1=winnerName; else target.t2=winnerName; }
+  
+  // Progression Consolante (Départ Quarts r1 -> Demis r2 -> Finale r3)
+  else if(id === 'm_c_q1' || id === 'm_c_q2') { const target=b.r2[0]; if(id==='m_c_q1') target.t1=winnerName; else target.t2=winnerName; }
+  else if(id === 'm_c_q3' || id === 'm_c_q4') { const target=b.r2[1]; if(id==='m_c_q3') target.t1=winnerName; else target.t2=winnerName; }
+  else if(id === 'm_c_d0' || id === 'm_c_d1') { const target=b.r3[0]; if(id==='m_c_d0') target.t1=winnerName; else target.t2=winnerName; }
+  
+  // Forcer l'avancement si le match suivant hérite d'un exempt
+  if(id.startsWith('m_m_q')) { b.r2.forEach(m => { if(m.t1==='Exempt'||m.t2==='Exempt') updateBracketMatchExempt(b, m); }); }
+  if(id.startsWith('m_m_d')) { b.r3.forEach(m => { if(m.t1==='Exempt'||m.t2==='Exempt') updateBracketMatchExempt(b, m); }); }
+  if(id.startsWith('m_c_q')) { b.r1.forEach(m => { if(m.t1==='Exempt'||m.t2==='Exempt') updateBracketMatchExempt(b, m); }); }
+  if(id.startsWith('m_c_d')) { b.r2.forEach(m => { if(m.t1==='Exempt'||m.t2==='Exempt') updateBracketMatchExempt(b, m); }); }
+}
+
+function updateBracketMatchExempt(b, m) {
+  if(m.val) return;
+  if(m.t1 === 'Exempt' && m.t2 === 'Exempt') { m.s1=0; m.s2=0; m.val=true; advanceWinner(b, m, 'Exempt'); }
+  else if(m.t1 === 'Exempt') { m.s1=0; m.s2=1; m.val=true; advanceWinner(b, m, m.t2); }
+  else if(m.t2 === 'Exempt') { m.s1=1; m.s2=0; m.val=true; advanceWinner(b, m, m.t1); }
+}
+
+function openScoreModal(type, matchId, poolIdx=null) {
+  if(!state.orgMode) return;
+  const t = currentTourney();
+  let m, title="";
+  if(type === 'pool') { m = t.pools[poolIdx].matches.find(x => x.id === matchId); title = `Score · ${m.t1} vs ${m.t2}`; }
+  else if(type === 'main') {
+    const b = t.mainBracket;
+    m = b.r1.find(x=>x.id===matchId) || b.r2.find(x=>x.id===matchId) || b.r3.find(x=>x.id===matchId) || b.r4.find(x=>x.id===matchId);
+    title = "Score · Tableau Principal";
+  } else {
+    const b = t.consolationBracket;
+    m = b.r1.find(x=>x.id===matchId) || b.r2.find(x=>x.id===matchId) || b.r3.find(x=>x.id===matchId);
+    title = "Score · Consolante";
+  }
+  
+  let html = `
+    <button class="modal-close" onclick="closeModal('scoreModal')">×</button>
+    <div class="modal-title">${title}</div>
+    <div style="display:flex;flex-direction:column;gap:18px;margin:20px 0 25px;">
+      <div style="display:flex;align-items:center;justify-content:between;gap:12px;">
+        <div style="flex:1;font-weight:600;font-size:15px;">${m.t1}</div>
+        <input type="number" id="sModal1" class="score-input" value="${m.s1!==null?m.s1:''}" placeholder="0">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:between;gap:12px;">
+        <div style="flex:1;font-weight:600;font-size:15px;">${m.t2}</div>
+        <input type="number" id="sModal2" class="score-input" value="${m.s2!==null?m.s2:''}" placeholder="0">
+      </div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="saveScoreModal('${type}','${matchId}',${poolIdx})">Valider le score</button>
+  `;
+  document.getElementById('scoreModalContent').innerHTML = html;
+  openModal('scoreModal');
+}
+
+function saveScoreModal(type, matchId, poolIdx) {
+  const t = currentTourney();
+  const s1 = parseInt(document.getElementById('sModal1').value);
+  const s2 = parseInt(document.getElementById('sModal2').value);
+  if(isNaN(s1) || isNaN(s2)) { toast("Veuillez saisir les deux scores", "error"); return; }
+  if(s1 === s2) { toast("Le padel ne gère pas les matchs nuls !", "error"); return; }
+  
+  if(type === 'pool') {
+    const p = t.pools[poolIdx]; const m = p.matches.find(x => x.id === matchId);
+    m.s1 = s1; m.s2 = s2; m.validated = true; updatePoolStats(p);
+  } else if(type === 'main') {
+    const b = t.mainBracket;
+    const m = b.r1.find(x=>x.id===matchId) || b.r2.find(x=>x.id===matchId) || b.r3.find(x=>x.id===matchId) || b.r4.find(x=>x.id===matchId);
+    m.s1 = s1; m.s2 = s2; m.val = true; advanceWinner(b, m, s1 > s2 ? m.t1 : m.t2);
+  } else {
+    const b = t.consolationBracket;
+    const m = b.r1.find(x=>x.id===matchId) || b.r2.find(x=>x.id===matchId) || b.r3.find(x=>x.id===matchId);
+    m.s1 = s1; m.s2 = s2; m.val = true; advanceWinner(b, m, s1 > s2 ? m.t1 : m.t2);
+  }
+  
+  save(); closeModal('scoreModal'); render(type==='pool'?'poules':'finale'); toast("Score enregistré !");
+}
+
+// FORCE LE CHANGEMENT MANUEL DES ÉQUIPES DANS LES TABLEAUX FINAUX
+function forceChangeBracketTeam(bracketType, roundKey, matchIdx, slotKey, selectedValue) {
+  const t = currentTourney();
+  const b = (bracketType === 'main') ? t.mainBracket : t.consolationBracket;
+  const match = b[roundKey][matchIdx];
+  if (slotKey === 't1') match.t1 = selectedValue;
+  else match.t2 = selectedValue;
+  save();
+  toast("Équipe ajustée manuellement !");
+}
+
+// ─── MASTER RENDERS ──────────────────────────────────────────────────────────
+function renderAccueil() {
+  const t = currentTourney();
+  let html = `
+    <div class="card">
+      <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Tournoi Actif</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:#fff;line-height:1.2;">${t.name}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px;">📍 ${t.lieu} · 🗓️ ${t.date}</div>
+    </div>
+    <div class="phase-banner">
+      <div>
+        <div class="phase-label">${t.phase==='registration'?'Phase d\'inscriptions':t.phase==='pools'?'Phase de poules':'Phases finales directes'}</div>
+        <div class="phase-count">${t.teams.length} équipes engagées</div>
+      </div>
+      ${t.phase==='registration' && state.orgMode ? `<button class="btn btn-gold btn-sm" onclick="generatePools()">Lancer les poules →</button>` : ''}
+      ${t.phase==='pools' && state.orgMode ? `<button class="btn btn-gold btn-sm" onclick="startBrackets()">Lancer les phases finales →</button>` : ''}
+    </div>
+    <div class="section-title">Équipes inscrites</div>
+  `;
+  
+  if(t.phase === 'registration' && state.orgMode) {
+    html += `<button class="btn btn-outline btn-block btn-sm" style="margin-bottom:14px;" onclick="addTeam()">+ Ajouter un binôme</button>`;
+  }
+  
+  if(!t.teams.length) { html += `<div style="text-align:center;color:var(--text3);padding:20px;font-style:italic;">Aucune équipe pour l'instant.</div>`; }
+  else {
+    html += `<div style="margin:0 -3px;">`;
+    t.teams.forEach((name, i) => {
+      html += `<div
